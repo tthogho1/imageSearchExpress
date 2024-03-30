@@ -1,7 +1,7 @@
 import express from 'express'
-import { Embedding } from './lib/embedding.ts';
+import { Embedding } from './lib/embedding.js';
 import { Pinecone , QueryResponse, FetchResponse ,RecordMetadata } from '@pinecone-database/pinecone';
-import type { webCamObj, webCamMetadata } from './lib/type.ts';
+import type { webCamMetadata } from './lib/type.ts';
 import type { Photo } from './lib/type.ts';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -26,7 +26,7 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use(express.static( __dirname + '/static'));
+app.use(express.static( __dirname + '/public'));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
