@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
-    "build": "npm run tsc",
+    "build": "rimraf dist && tsc",
+    "ts.check": "tsc --project tsconfig.json",
     "ts-node": "ts-node --esm src/index.ts",
+    "add-build": "git add dist",
     "start": "node dist/index.js",
     "dev": "ts-node --esm src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,7 +23,14 @@
     "@xenova/transformers": "^2.16.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.1",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.3"
-  }
+  },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ]
 }
