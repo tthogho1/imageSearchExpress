@@ -12,11 +12,14 @@ class Embedding {
 
     private async initializeModels() {
         const model_id = process.env.MODEL_ID;
-
+        console.log(`start initialize model ${model_id}`);
+        
         this.model = await CLIPVisionModelWithProjection.from_pretrained(model_id as string);
         this.tokenizer = await AutoTokenizer.from_pretrained(model_id as string);
         this.textModel = await CLIPTextModelWithProjection.from_pretrained(model_id as string);
         this.imageProcessor = await AutoProcessor.from_pretrained(model_id as string);
+
+        console.log(`end initialize model ${model_id}`);
     }
 
     async getTextEmbedding(text: string): Promise<number[]> {

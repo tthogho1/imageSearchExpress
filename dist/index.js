@@ -37,6 +37,7 @@ const embedding = new Embedding();
 const router = express.Router();
 router.post('/api/searchWebcam', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const query = req.body.query;
+    console.log("query: " + query);
     const y = yield embedding.getTextEmbedding(query);
     const response = yield index.namespace('webcamInfo').query({
         topK: 5,

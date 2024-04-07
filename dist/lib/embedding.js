@@ -19,10 +19,12 @@ class Embedding {
     initializeModels() {
         return __awaiter(this, void 0, void 0, function* () {
             const model_id = process.env.MODEL_ID;
+            console.log(`start initialize model ${model_id}`);
             this.model = yield CLIPVisionModelWithProjection.from_pretrained(model_id);
             this.tokenizer = yield AutoTokenizer.from_pretrained(model_id);
             this.textModel = yield CLIPTextModelWithProjection.from_pretrained(model_id);
             this.imageProcessor = yield AutoProcessor.from_pretrained(model_id);
+            console.log(`end initialize model ${model_id}`);
         });
     }
     getTextEmbedding(text) {

@@ -37,6 +37,7 @@ const router: express.Router = express.Router()
 router.post('/api/searchWebcam', async (req:express.Request, res:express.Response) => {
     const query = req.body.query as string;
 
+    console.log("query: " + query);
     const y = await embedding.getTextEmbedding(query);
     const response = await index.namespace('webcamInfo').query({
         topK: 5,
