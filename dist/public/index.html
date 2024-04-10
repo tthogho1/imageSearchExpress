@@ -1,30 +1,32 @@
 ﻿<!DOCTYPE html>
 <html lang="ja">
-<head>
-<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8" />
-<title>Search Image</title>
-<style media="screen">
-#nowLoading {
-    display: table;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #fff;
-    opacity: 0.8;
-}
 
-#innerMsg {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-    padding-top: 140px;
-    z-index:100;
-    background: url('38_cycle_forty_24.gif') center center no-repeat;
-}
-</style>
+<head>
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8" />
+    <title>Search Image</title>
+    <style media="screen">
+        #nowLoading {
+            display: table;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #fff;
+            opacity: 0.8;
+        }
+
+        #innerMsg {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+            padding-top: 140px;
+            z-index: 100;
+            background: url('38_cycle_forty_24.gif') center center no-repeat;
+        }
+    </style>
 </head>
+
 <body>
     <h3>Search Image by Text</h3>
     <div>
@@ -42,181 +44,207 @@
             <div id="drop-zone" style="text-align: center;width:40%;border: 1px solid; ">
                 <p> drag and drop image file </p>
                 <div class="left-column" id="preview"></div>
-                <input type="file" name="file" id="file-input" style="display:none" >
+                <input type="file" name="file" id="file-input" style="display:none">
             </div>
+        </form>
+    </div>
+    <BR>
+    <h3>Search Image by URL</h3>
+    <div>
+        <form id="search-url">
+            <label>prompt</label><input id="prompt-url" type="text" value="" style="border-width:1px;width:600px" />
+            <button type="button" id="search-btn-url" style="float:left;margin-right:40px">search</button>
         </form>
     </div>
     <BR>
     <div>
         <div style="float: left;">
-            <label>file1</label><input id="file1" type="text" value="" style="border:0px" readonly/>
-            <label>similarity</label><input id="similarity1" type="text" value="" style="border:0px" readonly/>
+            <label>file1</label><input id="file1" type="text" value="" style="border:0px" readonly />
+            <label>similarity</label><input id="similarity1" type="text" value="" style="border:0px" readonly />
             <div>
                 <img id="result1" border="0" src="" style="display:none" />
             </div>
-            <label>file2</label><input id="file2" type="text" value="" style="border:0px" readonly/>
-            <label>similarity</label><input id="similarity2" type="text" value="" style="border:0px" readonly/>
+            <label>file2</label><input id="file2" type="text" value="" style="border:0px" readonly />
+            <label>similarity</label><input id="similarity2" type="text" value="" style="border:0px" readonly />
             <div>
                 <img id="result2" border="0" src="" style="display:none" />
             </div>
-            <label>file3</label><input id="file3" type="text" value="" style="border:0px" readonly/>
-            <label>similarity</label><input id="similarity3" type="text" value="" style="border:0px" readonly/>
+            <label>file3</label><input id="file3" type="text" value="" style="border:0px" readonly />
+            <label>similarity</label><input id="similarity3" type="text" value="" style="border:0px" readonly />
             <div>
                 <img id="result3" border="0" src="" style="display:none" />
             </div>
-            <label>file4</label><input id="file4" type="text" value="" style="border:0px" readonly/>
-            <label>similarity</label><input id="similarity4" type="text" value="" style="border:0px" readonly/>
+            <label>file4</label><input id="file4" type="text" value="" style="border:0px" readonly />
+            <label>similarity</label><input id="similarity4" type="text" value="" style="border:0px" readonly />
             <div>
                 <img id="result4" border="0" src="" style="display:none" />
             </div>
-            <label>file5</label><input id="fil5" type="text" value="" style="border:0px" readonly/>
-            <label>similarity</label><input id="similarity5" type="text" value="" style="border:0px" readonly/>
+            <label>file5</label><input id="fil5" type="text" value="" style="border:0px" readonly />
+            <label>similarity</label><input id="similarity5" type="text" value="" style="border:0px" readonly />
             <div>
                 <img id="result5" border="0" src="" style="display:none" />
             </div>
         </div>
     </div>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    var dropZone = document.getElementById('drop-zone');
-    var preview = document.getElementById('preview');
-    var fileInput = document.getElementById('file-input');
+        var dropZone = document.getElementById('drop-zone');
+        var preview = document.getElementById('preview');
+        var fileInput = document.getElementById('file-input');
 
-    dragAndDropFile(dropZone, fileInput, preview);
+        dragAndDropFile(dropZone, fileInput, preview);
 
-    function dragAndDropFile(dropZone,fileInput,preview) {
-        dropZone.addEventListener('dragover', function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-            this.style.background = '#e1e7f0';
-        }, false);
+        function dragAndDropFile(dropZone, fileInput, preview) {
+            dropZone.addEventListener('dragover', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                this.style.background = '#e1e7f0';
+            }, false);
 
-        dropZone.addEventListener('dragleave', function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-            this.style.background = '#ffffff';
-        }, false);
+            dropZone.addEventListener('dragleave', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                this.style.background = '#ffffff';
+            }, false);
 
-        fileInput.addEventListener('change', function () {
-            previewFile(this.files[0],preview);
-        });
+            fileInput.addEventListener('change', function () {
+                previewFile(this.files[0], preview);
+            });
 
-        dropZone.addEventListener('drop', function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-            this.style.background = '#ffffff';
-            var files = e.dataTransfer.files;
-            if (files.length > 1) return alert('only one file for upload');
-            fileInput.files = files;
-            previewFile(files[0],preview);
-        }, false);
-    }
-
-    function previewFile(file,preview) {
-        var fr = new FileReader();
-        fr.readAsDataURL(file);
-        fr.onload = function() {
-            var img = document.createElement('img');
-            img.setAttribute('src', fr.result);
-            preview.innerHTML = '';
-            preview.appendChild(img);
-        };
-    }
-</script>
-<script>
-const button = document.getElementById("search-btn-text");
-button.addEventListener("click", postPrompt);
-
-async function postPrompt() {
-    const prompt = document.getElementById('prompt').value;
-
-    const url = "./api/searchWebcam";
-    const body = {
-        query: prompt,
-    };
-    
-    fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json",
-        },
-        body: JSON.stringify(body),
-    }).then((response) => response.json())
-    .then((data) => {
-        console.log(data);
-        resultSet(data);
-
-    }).catch((error) => {
-            console.error("Error:", error);
-    });
-}
-</script>
-<script>
-    function ajaxPost(url, results, form_data) {
-        dispLoading("serching....");
-
-        fetch(url, {
-            method: 'POST',
-            body: form_data,
-            timeout: 30000,
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            resultSet(data.matches);
-        })
-        .catch((error) => {
-            alert(error.message);
-        })
-        .finally(() => {
-            const nowLoading = document.getElementById('innerMsg');
-            nowLoading.remove();
-        });
-
-    }
-
-    function setImage(imgid,simid,image,similarity,fileid) {
-
-        const imgId = document.getElementById(imgid);
-        const imgSrc = 'https://windyimage.s3.ap-northeast-1.amazonaws.com/' + image + ".jpg";
-        imgId.setAttribute('src', imgSrc);
-        imgId.style.display = 'block';
-        document.getElementById(fileid).value = image;
-        document.getElementById(simid).value = similarity;
-    }
-
-    function resultSet(data) {
-
-        for (let i = 0; i < data.length; i++) {
-            const id = data[i]['id'];
-            const score = data[i]['score'];
-            const fileName = `file${i + 1}`;
-            setImage(`result${i + 1}`, `similarity${i + 1}`, id, score, fileName);
+            dropZone.addEventListener('drop', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                this.style.background = '#ffffff';
+                var files = e.dataTransfer.files;
+                if (files.length > 1) return alert('only one file for upload');
+                fileInput.files = files;
+                previewFile(files[0], preview);
+            }, false);
         }
 
-    }
+        function previewFile(file, preview) {
+            var fr = new FileReader();
+            fr.readAsDataURL(file);
+            fr.onload = function () {
+                var img = document.createElement('img');
+                img.setAttribute('src', fr.result);
+                preview.innerHTML = '';
+                preview.appendChild(img);
+            };
+        }
+    </script>
+    <script>
+        const button = document.getElementById("search-btn-text");
+        button.addEventListener("click", postPrompt);
 
-    const button_image = document.getElementById("search-btn-image");
-    button_image.addEventListener("click", function () {
-        const form = document.getElementById('search-file');
-        const form_data = new FormData(form);
-        ajaxPost('./searchByImage',resultSet,form_data);
-    });
+        async function postPrompt() {
+            const prompt = document.getElementById('prompt').value;
 
-</script>
-<script>
-function dispLoading(msg){
-    const nowLoading = document.getElementById('nowLoading');
-    
-    if (!nowLoading) {
-        const div = document.createElement('div');
-        div.id = 'innerMsg';
-        div.textContent = msg;
-        document.body.appendChild(div);
-    }
-}
+            const url = "./api/searchWebcam";
+            const body = {
+                query: prompt,
+            };
 
-</script>
-</body >
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify(body),
+            }).then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    resultSet(data);
+
+                }).catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+    </script>
+    <script>
+        function ajaxPost(url, results, form_data) {
+            dispLoading("serching....");
+
+            fetch(url, {
+                method: 'POST',
+                body: form_data,
+                timeout: 30000,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    resultSet(data.matches);
+                })
+                .catch((error) => {
+                    alert(error.message);
+                })
+                .finally(() => {
+                    const nowLoading = document.getElementById('innerMsg');
+                    nowLoading.remove();
+                });
+
+        }
+
+        function setImage(imgid, simid, image, similarity, fileid) {
+
+            const imgId = document.getElementById(imgid);
+            const imgSrc = 'https://windyimage.s3.ap-northeast-1.amazonaws.com/' + image + ".jpg";
+            imgId.setAttribute('src', imgSrc);
+            imgId.style.display = 'block';
+            document.getElementById(fileid).value = image;
+            document.getElementById(simid).value = similarity;
+
+        }
+
+        function resultSet(data) {
+
+            for (let i = 0; i < data.length; i++) {
+                const id = data[i]['id'];
+                const score = data[i]['score'];
+                const fileName = `file${i + 1}`;
+                setImage(`result${i + 1}`, `similarity${i + 1}`, id, score, fileName);
+            }
+
+        }
+
+        const button_image = document.getElementById("search-btn-image");
+        button_image.addEventListener("click", function () {
+            const form = document.getElementById('search-file');
+            const form_data = new FormData(form);
+            ajaxPost('./searchByImage', resultSet, form_data);
+        });
+
+    </script>
+    <script>
+        function dispLoading(msg) {
+            const nowLoading = document.getElementById('nowLoading');
+
+            if (!nowLoading) {
+                const div = document.createElement('div');
+                div.id = 'innerMsg';
+                div.textContent = msg;
+                document.body.appendChild(div);
+            }
+        }
+    </script>
+    <script>
+        const btnUrl = document.getElementById("search-btn-url");
+        btnUrl.addEventListener("click", postUrl);
+
+        async function postUrl() {
+            const urlInput = document.getElementById('prompt-url');
+            const url = urlInput.value;
+            const data = { imageUrl: url };
+            const response = await fetch('./api/searchWebcamByURL', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            const result = await response.json();
+            resultSet(result);
+        }
+    </script>
+</body>
+
 </html>

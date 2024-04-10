@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { AutoProcessor, AutoTokenizer, CLIPTextModelWithProjection, CLIPVisionModelWithProjection } from '@xenova/transformers';
+import { AutoProcessor, RawImage, AutoTokenizer, CLIPTextModelWithProjection, CLIPVisionModelWithProjection } from '@xenova/transformers';
 class Embedding {
     constructor() {
         this.model = null;
@@ -35,6 +35,17 @@ class Embedding {
             const textInputs = yield this.tokenizer(text, { padding: true, truncation: true });
             const { text_embeds } = yield this.textModel(textInputs);
             return Array.from(text_embeds.data);
+        });
+    }
+    getImageEmbedding(url) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!this.imageProcessor || !this.model) {
+                throw new Error('Model not initialized');
+            }
+            const image = yield RawImage.read(url);
+            const inputs = yield this.imageProcessor(image);
+            const { embeds } = yield this.model(inputs);
+            return Array.from(embeds.data);
         });
     }
 }

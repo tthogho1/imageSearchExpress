@@ -13,6 +13,11 @@ export type Photo = {
     links: {
         html: string;
     };
+    location:{
+        country:string,
+        latitude:number,
+        longitude:number
+    }
 };
 
 export type PhotoSearchResponse = {

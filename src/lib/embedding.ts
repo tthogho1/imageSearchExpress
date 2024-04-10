@@ -1,10 +1,10 @@
-import {AutoProcessor,AutoTokenizer,CLIPTextModelWithProjection,CLIPVisionModelWithProjection, PreTrainedTokenizer} from '@xenova/transformers';
+import {Processor,AutoProcessor,RawImage,AutoTokenizer,CLIPTextModelWithProjection,CLIPVisionModelWithProjection, PreTrainedTokenizer} from '@xenova/transformers';
 
 class Embedding {
     private model: CLIPVisionModelWithProjection |null = null;
     private tokenizer: PreTrainedTokenizer | null = null;
     private textModel: CLIPTextModelWithProjection | null = null; 
-    private imageProcessor: AutoProcessor | null = null;
+    private imageProcessor: Processor | null = null;
 
     constructor() {
         this.initializeModels();
@@ -30,6 +30,19 @@ class Embedding {
         const { text_embeds } = await this.textModel(textInputs);
         return Array.from(text_embeds.data);
     }
+
+
+    async getImageEmbedding(url: string): Promise<number[]> {
+        if (!this.imageProcessor || !this.model) {
+            throw new Error('Model not initialized');
+        }
+
+        const image = await RawImage.read(url);
+        const inputs = await this.imageProcessor(image);
+        const { embeds } = await this.model(inputs);
+        return Array.from(embeds.data);
+    }
+
 }
 
 export { Embedding };

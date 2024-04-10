@@ -61,6 +61,53 @@ router.post('/api/searchWebcam', async (req:express.Request, res:express.Respons
             },
             links: {
                 html: metadata.day,
+            },
+            location:{
+                country:metadata.country,
+                latitude:metadata.latitude,
+                longitude:metadata.longitude
+            }
+        }
+        return photo;
+    })
+    res.send(photos);
+})
+
+router.post('/api/searchWebcamByURL', async (req:express.Request, res:express.Response) => {
+    const imageUrl = req.body.imageUrl as string;
+
+    // base64image to　File
+    // const imageBuffer = Buffer.from(image, 'base64');
+    // const imageFile = new File([imageBuffer], 'image.jpg', { type: 'image/jpeg' });
+
+    const y = await embedding.getImageEmbedding(imageUrl);
+    const response = await index.namespace('webcamInfo').query({
+        topK: 5,
+        vector: y,
+        includeValues: false,
+        includeMetadata: true
+    });
+    
+    const { matches } = response ;
+    const photos = matches.map(match => {
+        const metadata = match.metadata as webCamMetadata;
+        const photo : Photo = {
+            id: match.id,
+            score: match.score,
+            created_at: "",
+            width: 200,
+            height: 112,
+            description: metadata.title,
+            urls: {
+                small: image_server + match.id + ".jpg",
+            },
+            links: {
+                html: metadata.day,
+            },
+            location:{
+                country:metadata.country,
+                latitude:metadata.latitude,
+                longitude:metadata.longitude
             }
         }
         return photo;
