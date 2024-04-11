@@ -15,6 +15,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const wrap = (fn) => (...args) => fn(...args).catch(args[2]);
 import dotenv from 'dotenv';
 dotenv.config();
 const app = express();
@@ -35,7 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 const embedding = new Embedding();
 // GetとPostのルーティング
 const router = express.Router();
-router.post('/api/searchWebcam', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/api/searchWebcam', wrap((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const query = req.body.query;
     console.log("query: " + query);
     const y = yield embedding.getTextEmbedding(query);
@@ -70,12 +71,13 @@ router.post('/api/searchWebcam', (req, res) => __awaiter(void 0, void 0, void 0,
         return photo;
     });
     res.send(photos);
-}));
-router.post('/api/searchWebcamByURL', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+})));
+router.post('/api/searchWebcamByURL', wrap((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const imageUrl = req.body.imageUrl;
     // base64image to　File
     // const imageBuffer = Buffer.from(image, 'base64');
     // const imageFile = new File([imageBuffer], 'image.jpg', { type: 'image/jpeg' });
+    console.log("imageUrl: " + imageUrl);
     const y = yield embedding.getImageEmbedding(imageUrl);
     const response = yield index.namespace('webcamInfo').query({
         topK: 5,
@@ -108,6 +110,6 @@ router.post('/api/searchWebcamByURL', (req, res) => __awaiter(void 0, void 0, vo
         return photo;
     });
     res.send(photos);
-}));
+})));
 app.use(router);
 app.listen(3000, () => { console.log('Example app listening on port 3000!'); });

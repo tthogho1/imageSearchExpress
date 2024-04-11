@@ -9,6 +9,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const wrap = (fn: (...args: any[]) => Promise<any>) => (...args: any[]) => fn(...args).catch(args[2]);
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -34,7 +36,7 @@ const embedding = new Embedding()
 
 // GetとPostのルーティング
 const router: express.Router = express.Router()
-router.post('/api/searchWebcam', async (req:express.Request, res:express.Response) => {
+router.post('/api/searchWebcam', wrap(async (req:express.Request, res:express.Response, next) => {
     const query = req.body.query as string;
 
     console.log("query: " + query);
@@ -71,14 +73,15 @@ router.post('/api/searchWebcam', async (req:express.Request, res:express.Respons
         return photo;
     })
     res.send(photos);
-})
+}))
 
-router.post('/api/searchWebcamByURL', async (req:express.Request, res:express.Response) => {
+router.post('/api/searchWebcamByURL', wrap(async (req:express.Request, res:express.Response, next) => {
     const imageUrl = req.body.imageUrl as string;
 
     // base64image to　File
     // const imageBuffer = Buffer.from(image, 'base64');
     // const imageFile = new File([imageBuffer], 'image.jpg', { type: 'image/jpeg' });
+    console.log("imageUrl: " + imageUrl);
 
     const y = await embedding.getImageEmbedding(imageUrl);
     const response = await index.namespace('webcamInfo').query({
@@ -113,7 +116,7 @@ router.post('/api/searchWebcamByURL', async (req:express.Request, res:express.Re
         return photo;
     })
     res.send(photos);
-})
+}))
 
 app.use(router)
 app.listen(3000,()=>{ console.log('Example app listening on port 3000!') })

@@ -44,8 +44,8 @@ class Embedding {
             }
             const image = yield RawImage.read(url);
             const inputs = yield this.imageProcessor(image);
-            const { embeds } = yield this.model(inputs);
-            return Array.from(embeds.data);
+            const embeds = yield this.model(inputs);
+            return Array.from(embeds.image_embeds.data);
         });
     }
 }

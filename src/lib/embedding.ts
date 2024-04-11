@@ -39,8 +39,8 @@ class Embedding {
 
         const image = await RawImage.read(url);
         const inputs = await this.imageProcessor(image);
-        const { embeds } = await this.model(inputs);
-        return Array.from(embeds.data);
+        const embeds  = await this.model(inputs);
+        return Array.from(embeds.image_embeds.data);
     }
 
 }
